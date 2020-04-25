@@ -20,7 +20,7 @@ ui <- fluidPage(
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
-      selectInput("school", "Campus:", c("Marquette"=3)),
+      selectInput("school", "Campus:", c("Alverno College"=1,"Cardinal Stritch University"=2,"Marquette"=3,"Milwaukee Area Technical College"=4,"Milwaukee Institute of Art & Design"=5,"Milwaukee School of Engineering"=6,"Mount Mary College"=7,"Bryant and Stratton College"=8,"Wisconsin Lutheran College"=9,"University of Wisconsin-Milwaukee"=10)),
       selectInput("weight", "Number of Crimes", c("Total" = 0, "Per Student" = 1, "Per 1000 Students"=2))
     ),
     
