@@ -21,7 +21,7 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       selectInput("school", "Campus:", c("Marquette"=3)),
-      selectInput("per1000", "Number of Crimes", c("Total" = 0, "Per 1000 Students" = 1))
+      selectInput("weight", "Number of Crimes", c("Total" = 0, "Per Student" = 1, "Per 1000 Students"=2))
     ),
     
     # Show a plot of the generated distribution
@@ -35,11 +35,14 @@ ui <- fluidPage(
 server <- function(input, output) {
   
   output$linePlot <- renderPlot({
-    if(input$per1000==0){
+    if(input$weight==0){
     d<-ts(as.vector(df[input$school,12:23]))
     }
-    else{
-    d<-ts(as.vector(df[input$school, 26:37]))
+    if(input$weight==1){
+    d<-ts(as.vector(df[input$school, 24:35]))
+    }
+    if(input$weight==2){
+    d<-ts(as.vector(df[input$school, 36:47]))
     }
     #print(d)
     plot(x,d,xlab = "Year", ylab="Total Crime Events", main=df$INSTNM[input$school], ylim = c(0,(1.2*max(d))))
