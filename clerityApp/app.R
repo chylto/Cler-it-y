@@ -10,7 +10,7 @@
 library(shiny)
 
 df <-read.csv('data.csv')
-
+x<-c(6,7,8,9,10,11,12,13,14,15,16,17)
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   
@@ -36,10 +36,12 @@ server <- function(input, output) {
   
   output$linePlot <- renderPlot({
     if(input$per1000==0){
-    d<-as.vector(df[input$school,11:22])}
-    else{
-      d<-as.vector(df[input$school, 25:36])
+    d<-ts(as.vector(df[input$school,12:23]))
     }
+    else{
+    d<-ts(as.vector(df[input$school, 26:37]))
+    }
+    #print(d)
     plot(x,d,xlab = "Year", ylab="Total Crime Events", main=df$INSTNM[input$school], ylim = c(0,(1.2*max(d))))
     lines(x,d,type="o")
   })
