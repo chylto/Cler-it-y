@@ -9,7 +9,7 @@ boxplot(df$allCrime12)
 boxplot(df$allCrime13)
 boxplot(df$allCrime14)
 boxplot(df$allCrime15)
-boxplot(df$allCrime16)
+boxplot(df$allCrime16, ylab="Total Crime Events per School", main="2016")
 boxplot(df$allCrime17)
 
 df$key <- paste(df$INSTNM, df$BRANCH, sep=": ")
@@ -24,7 +24,8 @@ x<-2006:2017
 
 for (i in 1:32) {
   d<-t(as.vector(dfNew[i,1:12]))
-  lines(x,d,type="o", xlab = "Year", ylab="Total Crime Events", main=dfNew[i,13])
+  plot(x,d,xlab = "Year", ylab="Total Crime Events", main=dfNew[i,13], ylim = c(0,(1.2*max(d))))
+  lines(x,d,type="o")
 }
 
 # d<-t(as.vector(dfNew[1,1:12]))
