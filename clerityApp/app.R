@@ -6,7 +6,7 @@
 #
 #    http://shiny.rstudio.com/
 #
-install.packages("shinythemes")
+#install.packages("shinythemes")
 library(shinythemes)
 library(shiny)
 library(forecast)
@@ -19,7 +19,7 @@ x<-c(2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017)
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   
-  #theme = shinytheme("cerulean")
+  theme = shinytheme("cyborg"),
   
   # Application title
   titlePanel("Clerity: College Crime Rates in Milwaukee"),
