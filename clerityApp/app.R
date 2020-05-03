@@ -28,7 +28,7 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel("Select School",
       selectInput("school", "Campus:", c("Alverno College"=1,"Cardinal Stritch University"=2,"Marquette University"=3,"Milwaukee Area Technical College"=4,"Milwaukee Institute of Art & Design"=5,"Milwaukee School of Engineering"=6,"Mount Mary College"=7,"Bryant and Stratton College"=8,"Wisconsin Lutheran College"=9,"University of Wisconsin-Milwaukee"=10)),
-      selectInput("weight", "Number of Crimes", c("Total" = 0, "Per Student" = 1, "Per 1000 Students"=2)),
+      selectInput("weight", "Number of Crimes (by weight)", c("Total" = 0, "Per Student" = 1, "Per 1000 Students"=2)),
       selectInput("line","Baseline for Comparison", c("Overall Trend Line"=0,"Smoothed Trend Line"=1))
     ),
     
