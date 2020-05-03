@@ -9,6 +9,8 @@
 
 library(shiny)
 library(forecast)
+library(ggplot2)
+library(reshape2)
 
 df <-read.csv('data.csv')
 x<-c(2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017)
@@ -40,24 +42,34 @@ server <- function(input, output) {
   output$linePlot <- renderPlot({
     if(input$weight==0){
     d<-ts(as.vector(df[input$school,12:23]))
-    t<-as.vector(df[11,12:23])
+    t<-ts(as.vector(df[11,12:23]))
+    data <-append(as.vector(df[input$school,12:23]),(as.vector(df[11,12:23])))
     high = 55
     }
     if(input$weight==1){
     d<-ts(as.vector(df[input$school, 24:35]))
-    t<-as.vector(df[11,24:35])
+    t<-ts(as.vector(df[11,24:35]))
     high = .012
     }
     if(input$weight==2){
     d<-ts(as.vector(df[input$school, 36:47]))
-    t<-as.vector(df[11,36:47])
+    t<-ts(as.vector(df[11,36:47]))
     high = 12
     }
-    #avg<-tslm(t~trend+I(trend^2))
+    avg<-tslm(t~trend+I(trend^2))
+    fitted<-avg$fitted.values
     #print(avg$fitted.values)
     #print(d)
-    plot(x,d,xlab = "Year", ylab="Total Crime Events", main=df$INSTNM[input$school], ylim = c(0,high)) +lines(x,d,type="o",col="blue")+lines(x,t,type="o",col="red")
-  })
+    #data<-data.frame(c(x,d,t))
+    #data<-melt(data,id=x)
+    #d1<-data.frame(data,class=rep(c("School","All"),each=12))
+    #ggplot(data=d1, aes(x=rep(x,2),y=data,group=class))+geom_line()
+    
+    zeke=((max(fitted)-min(fitted))/12 *(1:12))+min(fitted)
+    
+    plot(x,d,xlab = "Year", ylab="Total Crime Events", main=df$INSTNM[input$school], xlim=c(2006,2017),ylim = c(0,high)) +lines(x,d,type="o",col="blue",lwd=2)+lines(x,fitted,col="red",type="o",lwd=2)+lines(x,zeke,col="black",lwd=2)
+    
+    })
 
 }
 
