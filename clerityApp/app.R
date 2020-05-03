@@ -26,10 +26,13 @@ ui <- fluidPage(
   
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
-    sidebarPanel("Select School",
-      selectInput("school", "Campus:", c("Alverno College"=1,"Cardinal Stritch University"=2,"Marquette University"=3,"Milwaukee Area Technical College"=4,"Milwaukee Institute of Art & Design"=5,"Milwaukee School of Engineering"=6,"Mount Mary College"=7,"Bryant and Stratton College"=8,"Wisconsin Lutheran College"=9,"University of Wisconsin-Milwaukee"=10)),
-      selectInput("weight", "Number of Crimes (by weight)", c("Total" = 0, "Per Student" = 1, "Per 1000 Students"=2)),
-      selectInput("line","Baseline for Comparison", c("Overall Trend Line"=0,"Smoothed Trend Line"=1))
+
+    sidebarPanel(
+      "Select School",
+      selectInput("school", "Campus:", c("Alverno College"=1,"Cardinal Stritch University"=2,"Marquette University"=3,"Milwaukee Area Technical College"=4,"Milwaukee Institute of Art & Design"=5,"Milwaukee School of Engineering"=6,"Mount Mary College"=7,"Bryant and Stratton College"=8,"Wisconsin Lutheran College"=9,"University of Wisconsin-Milwaukee"=10), selected=3),
+      selectInput("weight", "Number of Crimes", c("Total" = 0, "Per Student" = 1, "Per 1000 Students"=2)),
+      selectInput("line","Baseline", c("Smoothed Trend Line"=0,"Overall Average Crime Trend Line"=1),selected=1)
+
     ),
     
     # Show a plot of the generated distribution
@@ -70,11 +73,15 @@ server <- function(input, output) {
     #ggplot(data=d1, aes(x=rep(x,2),y=data,group=class))+geom_line()
     
     zeke=((max(fitted)-min(fitted))/12 *(1:12))+min(fitted)
+    zed=((mean(fitted[8:12])-mean(fitted[1:5]))/12 *(1:12))+mean(fitted[1:5])
+    
     #schoolName<-toString(df$INSTNM[input$school])
     
     if(input$line == 0){
-      plot(x,d,xlab = "Year", ylab="Total Crime Events", main=df$INSTNM[input$school], xlim=c(2006,2017),ylim = c(0,high)) +lines(x,d,type="o",lty=1,col="blue",lwd=2)+lines(x,zeke,col="black",lwd=2)
+
+      plot(x,d,xlab = "Year", ylab="Total Crime Events", main=df$INSTNM[input$school], xlim=c(2006,2017),ylim = c(0,high)) +lines(x,d,type="o",lty=1,col="blue",lwd=2)+lines(x,zed,col="black",lwd=2)
       legend("topright",legend=c("User School","Average Crime"),col=c("blue", "black"),lty=1,lwd = 2,text.col=c("blue","black"))
+
     }else{
     plot(x,d,xlab = "Year", ylab="Total Crime Events", main=df$INSTNM[input$school], xlim=c(2006,2017),ylim = c(0,high)) +lines(x,d,type="o",col="blue",lwd=2)+lines(x,fitted,col="black",type="o",lwd=2)
     legend("topright",legend=c("User School","Average Crime"),col=c("blue", "black"),lty=1,lwd = 2,text.col=c("blue","black"))
