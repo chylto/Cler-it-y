@@ -25,7 +25,8 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       selectInput("school", "Campus:", c("Alverno College"=1,"Cardinal Stritch University"=2,"Marquette University"=3,"Milwaukee Area Technical College"=4,"Milwaukee Institute of Art & Design"=5,"Milwaukee School of Engineering"=6,"Mount Mary College"=7,"Bryant and Stratton College"=8,"Wisconsin Lutheran College"=9,"University of Wisconsin-Milwaukee"=10)),
-      selectInput("weight", "Number of Crimes", c("Total" = 0, "Per Student" = 1, "Per 1000 Students"=2))
+      selectInput("weight", "Number of Crimes", c("Total" = 0, "Per Student" = 1, "Per 1000 Students"=2)),
+      selectInput("line","Baseline for Comparison", c("Trend"=0,"Specific"=1))
     ),
     
     # Show a plot of the generated distribution
@@ -66,9 +67,16 @@ server <- function(input, output) {
     #ggplot(data=d1, aes(x=rep(x,2),y=data,group=class))+geom_line()
     
     zeke=((max(fitted)-min(fitted))/12 *(1:12))+min(fitted)
+    #schoolName<-toString(df$INSTNM[input$school])
     
-    plot(x,d,xlab = "Year", ylab="Total Crime Events", main=df$INSTNM[input$school], xlim=c(2006,2017),ylim = c(0,high)) +lines(x,d,type="o",col="blue",lwd=2)+lines(x,fitted,col="red",type="o",lwd=2)+lines(x,zeke,col="black",lwd=2)
-    
+    if(input$line == 0){
+      plot(x,d,xlab = "Year", ylab="Total Crime Events", main=df$INSTNM[input$school], xlim=c(2006,2017),ylim = c(0,high)) +lines(x,d,type="o",lty=1,col="red",lwd=2)+lines(x,zeke,col="black",lwd=2)
+      legend("topright",legend=c("User School","Average Crime"),col=c("red", "black"),lty=1,lwd = 2,text.col=c("red","black"))
+    }else{
+    plot(x,d,xlab = "Year", ylab="Total Crime Events", main=df$INSTNM[input$school], xlim=c(2006,2017),ylim = c(0,high)) +lines(x,d,type="o",col="red",lwd=2)+lines(x,fitted,col="black",type="o",lwd=2)
+    legend("topright",legend=c("User School","Average Crime"),col=c("red", "black"),lty=1,lwd = 2,text.col=c("red","black"))
+      
+    }
     })
 
 }
